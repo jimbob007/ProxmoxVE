@@ -45,6 +45,9 @@ function update_script() {
     msg_ok "Stopped $APP"
 
     msg_info "Updating $APP to ${RELEASE}"
+    if ! command -v git >/dev/null 2>&1; then
+      $STD apt-get install -y git
+    fi
     rm -f /opt/gomft/gomft
     temp_file=$(mktemp)
     curl -fsSL "https://github.com/StarFleetCPTN/GoMFT/archive/refs/tags/v${RELEASE}.tar.gz" -o "$temp_file"
