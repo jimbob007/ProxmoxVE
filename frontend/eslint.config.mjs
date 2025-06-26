@@ -5,6 +5,7 @@ export default antfu(
     type: "app",
     typescript: true,
     formatters: true,
+    next: true,
     stylistic: {
       indent: 2,
       semi: true,
