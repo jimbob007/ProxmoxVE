@@ -13,8 +13,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "vitest",
-    "deploy": "next build && touch out/.nojekyll && git add out/ && git commit -m \"Deploy\" && git subtree push --prefix out origin gh-pages",
     "format:write": "prettier --write \"**/*.{ts,tsx,mdx}\" --cache",
     "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache",
     "typecheck": "tsc --noEmit"
@@ -65,8 +63,6 @@
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.68.0",
-    "@testing-library/dom": "^10.4.0",
-    "@testing-library/react": "^16.2.0",
     "@types/node": "^22.13.16",
     "@types/react": "npm:types-react@19.0.0-rc.1",
     "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
@@ -83,8 +79,7 @@
     "tailwindcss-animate": "^1.0.7",
     "tailwindcss-animated": "^1.1.2",
     "typescript": "^5.8.2",
-    "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^3.1.1"
+    "vite-tsconfig-paths": "^5.1.4"
   },
   "overrides": {
     "@types/react": "npm:types-react@19.0.0-rc.1",
