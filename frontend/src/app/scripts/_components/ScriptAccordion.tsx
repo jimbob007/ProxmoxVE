@@ -62,7 +62,7 @@ export default function ScriptAccordion({
         <AccordionItem
           key={category.id + ":category"}
           value={category.name}
-          className={cn("sm:text-md flex flex-col border-none", {
+          className={cn("sm:text-sm flex flex-col border-none", {
             "rounded-lg bg-accent/30": expandedItem === category.name,
           })}
         >
