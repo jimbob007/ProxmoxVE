@@ -45,7 +45,7 @@ export const navbarLinks = [
 export const mostPopularScripts = ["post-pve-install", "docker", "homeassistant"];
 
 export const analytics = {
-  url: "analytics.proxmoxve-scripts.com",
+  url: "analytics.community-scripts.org",
   token: "aefee1b9-2a12-4ac2-9d82-a63113edc62e",
 };
 
