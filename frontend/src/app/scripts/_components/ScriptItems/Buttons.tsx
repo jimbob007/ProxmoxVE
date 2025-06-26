@@ -1,20 +1,22 @@
-import { Button } from "@/components/ui/button";
+import { BookOpenText, Code, Globe, LinkIcon, RefreshCcw } from "lucide-react";
+
+import type { Script } from "@/lib/types";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { basePath } from "@/config/siteConfig";
-import { Script } from "@/lib/types";
-import { BookOpenText, Code, Globe, LinkIcon, RefreshCcw } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { basePath } from "@/config/site-config";
 
-const generateInstallSourceUrl = (slug: string) => {
+function generateInstallSourceUrl(slug: string) {
   const baseUrl = `https://raw.githubusercontent.com/community-scripts/${basePath}/main`;
   return `${baseUrl}/install/${slug}-install.sh`;
-};
+}
 
-const generateSourceUrl = (slug: string, type: string) => {
+function generateSourceUrl(slug: string, type: string) {
   const baseUrl = `https://raw.githubusercontent.com/community-scripts/${basePath}/main`;
 
   switch (type) {
@@ -29,18 +31,18 @@ const generateSourceUrl = (slug: string, type: string) => {
     default:
       return `${baseUrl}/ct/${slug}.sh`; // fallback for "ct"
   }
-};
+}
 
-const generateUpdateUrl = (slug: string) => {
+function generateUpdateUrl(slug: string) {
   const baseUrl = `https://raw.githubusercontent.com/community-scripts/${basePath}/main`;
   return `${baseUrl}/ct/${slug}.sh`;
-};
+}
 
-interface LinkItem {
+type LinkItem = {
   href: string;
   icon: React.ReactNode;
   text: string;
-}
+};
 
 export default function Buttons({ item }: { item: Script }) {
   const isCtOrDefault = ["ct"].includes(item.type);
@@ -76,7 +78,8 @@ export default function Buttons({ item }: { item: Script }) {
     },
   ].filter(Boolean) as LinkItem[];
 
-  if (links.length === 0) return null;
+  if (links.length === 0)
+    return null;
 
   return (
     <DropdownMenu>

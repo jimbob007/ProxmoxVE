@@ -1,5 +1,6 @@
 import { ClipboardIcon } from "lucide-react";
-import handleCopy from "./handleCopy";
+
+import handleCopy from "./handle-copy";
 
 export default function TextCopyBlock(description: string) {
   const pattern = /`([^`]*)`/g;
@@ -19,7 +20,8 @@ export default function TextCopyBlock(description: string) {
           />
         </span>
       );
-    } else {
+    }
+    else {
       return part;
     }
   });

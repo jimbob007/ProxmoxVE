@@ -1,8 +1,8 @@
-import { AppVersion } from "@/lib/types";
+import type { AppVersion } from "@/lib/types";
 
-interface VersionBadgeProps {
+type VersionBadgeProps = {
   version: AppVersion;
-}
+};
 
 export function VersionBadge({ version }: VersionBadgeProps) {
   return (

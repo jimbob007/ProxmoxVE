@@ -1,17 +1,17 @@
 import { CPUIcon, HDDIcon, RAMIcon } from "@/components/icons/resource-icons";
 import { getDisplayValueFromRAM } from "@/lib/utils/resource-utils";
 
-interface ResourceDisplayProps {
+type ResourceDisplayProps = {
   title: string;
   cpu: number | null;
   ram: number | null;
   hdd: number | null;
-}
+};
 
-interface IconTextProps {
+type IconTextProps = {
   icon: React.ReactNode;
   label: string;
-}
+};
 
 function IconText({ icon, label }: IconTextProps) {
   return (
@@ -27,7 +27,8 @@ export function ResourceDisplay({ title, cpu, ram, hdd }: ResourceDisplayProps) 
   const hasRAM = typeof ram === "number" && ram > 0;
   const hasHDD = typeof hdd === "number" && hdd > 0;
 
-  if (!hasCPU && !hasRAM && !hasHDD) return null;
+  if (!hasCPU && !hasRAM && !hasHDD)
+    return null;
 
   return (
     <div className="flex flex-wrap items-center gap-2">

@@ -1,12 +1,11 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { ArcElement, Chart as ChartJS, Tooltip as ChartTooltip, Legend } from "chart.js";
+import ChartDataLabels from "chartjs-plugin-datalabels";
+import { BarChart3, PieChart } from "lucide-react";
+import React, { useState } from "react";
+import { Pie } from "react-chartjs-2";
+
 import {
   Table,
   TableBody,
@@ -21,21 +20,23 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Chart as ChartJS, ArcElement, Tooltip as ChartTooltip, Legend } from "chart.js";
-import ChartDataLabels from "chartjs-plugin-datalabels";
-import { BarChart3, PieChart } from "lucide-react";
-import React, { useState } from "react";
-import { Pie, Bar } from "react-chartjs-2";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 ChartJS.register(ArcElement, ChartTooltip, Legend, ChartDataLabels);
 
-interface SummaryData {
+type SummaryData = {
   nsapp_count: Record<string, number>;
-}
+};
 
-interface ApplicationChartProps {
+type ApplicationChartProps = {
   data: SummaryData | null;
-}
+};
 
 const ITEMS_PER_PAGE = 20;
 const CHART_COLORS = [
@@ -61,14 +62,15 @@ export default function ApplicationChart({ data }: ApplicationChartProps) {
   const [chartStartIndex, setChartStartIndex] = useState(0);
   const [tableLimit, setTableLimit] = useState(ITEMS_PER_PAGE);
 
-  if (!data) return null;
+  if (!data)
+    return null;
 
   const sortedApps = Object.entries(data.nsapp_count)
     .sort(([, a], [, b]) => b - a);
 
   const chartApps = sortedApps.slice(
     chartStartIndex,
-    chartStartIndex + ITEMS_PER_PAGE
+    chartStartIndex + ITEMS_PER_PAGE,
   );
 
   const chartData = {
@@ -141,14 +143,18 @@ export default function ApplicationChart({ data }: ApplicationChartProps) {
               onClick={() => setChartStartIndex(Math.max(0, chartStartIndex - ITEMS_PER_PAGE))}
               disabled={chartStartIndex === 0}
             >
-              Previous {ITEMS_PER_PAGE}
+              Previous
+              {" "}
+              {ITEMS_PER_PAGE}
             </Button>
             <Button
               variant="outline"
               onClick={() => setChartStartIndex(chartStartIndex + ITEMS_PER_PAGE)}
               disabled={chartStartIndex + ITEMS_PER_PAGE >= sortedApps.length}
             >
-              Next {ITEMS_PER_PAGE}
+              Next
+              {" "}
+              {ITEMS_PER_PAGE}
             </Button>
           </div>
         </DialogContent>

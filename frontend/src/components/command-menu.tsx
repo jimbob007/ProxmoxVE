@@ -1,3 +1,10 @@
+import { useRouter } from "next/navigation";
+import { Sparkles } from "lucide-react";
+import Image from "next/image";
+import React from "react";
+
+import type { Category, Script } from "@/lib/types";
+
 import {
   CommandDialog,
   CommandEmpty,
@@ -6,22 +13,16 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { basePath } from "@/config/siteConfig";
+import { basePath } from "@/config/site-config";
 import { fetchCategories } from "@/lib/data";
-import { Category, Script } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import React from "react";
-import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
-import { DialogTitle } from "./ui/dialog";
-import { Sparkles } from "lucide-react";
-import { TooltipContent, TooltipProvider } from "./ui/tooltip";
-import { TooltipTrigger } from "./ui/tooltip";
-import { Tooltip } from "./ui/tooltip";
 
-export const formattedBadge = (type: string) => {
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
+import { DialogTitle } from "./ui/dialog";
+import { Button } from "./ui/button";
+import { Badge } from "./ui/badge";
+
+export function formattedBadge(type: string) {
   switch (type) {
     case "vm":
       return <Badge className="text-blue-500/75 border-blue-500/75">VM</Badge>;
@@ -33,12 +34,13 @@ export const formattedBadge = (type: string) => {
       return <Badge className="text-green-500/75 border-green-500/75">ADDON</Badge>;
   }
   return null;
-};
+}
 
 // random Script
 function getRandomScript(categories: Category[]): Script | null {
-  const allScripts = categories.flatMap((cat) => cat.scripts || []);
-  if (allScripts.length === 0) return null;
+  const allScripts = categories.flatMap(cat => cat.scripts || []);
+  if (allScripts.length === 0)
+    return null;
   const idx = Math.floor(Math.random() * allScripts.length);
   return allScripts[idx];
 }
@@ -48,18 +50,6 @@ export default function CommandMenu() {
   const [links, setLinks] = React.useState<Category[]>([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const router = useRouter();
-
-  React.useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        fetchSortedCategories();
-        setOpen((open) => !open);
-      }
-    };
-    document.addEventListener("keydown", down);
-    return () => document.removeEventListener("keydown", down);
-  }, []);
 
   const fetchSortedCategories = () => {
     setIsLoading(true);
@@ -74,6 +64,18 @@ export default function CommandMenu() {
       });
   };
 
+  React.useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        fetchSortedCategories();
+        setOpen(open => !open);
+      }
+    };
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
+  }, []);
+
   const openRandomScript = async () => {
     if (links.length === 0) {
       setIsLoading(true);
@@ -84,10 +86,12 @@ export default function CommandMenu() {
         if (randomScript) {
           router.push(`/scripts?id=${randomScript.slug}`);
         }
-      } finally {
+      }
+      finally {
         setIsLoading(false);
       }
-    } else {
+    }
+    else {
       const randomScript = getRandomScript(links);
       if (randomScript) {
         router.push(`/scripts?id=${randomScript.slug}`);
@@ -110,7 +114,8 @@ export default function CommandMenu() {
         >
           <span className="inline-flex">Search scripts...</span>
           <kbd className="pointer-events-none absolute right-[0.3rem] top-[0.45rem] hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
-            <span className="text-xs">⌘</span>K
+            <span className="text-xs">⌘</span>
+            K
           </kbd>
         </Button>
 
@@ -134,9 +139,9 @@ export default function CommandMenu() {
         <CommandInput placeholder="Search for a script..." />
         <CommandList>
           <CommandEmpty>{isLoading ? "Loading..." : "No scripts found."}</CommandEmpty>
-          {links.map((category) => (
+          {links.map(category => (
             <CommandGroup key={`category:${category.name}`} heading={category.name}>
-              {category.scripts.map((script) => (
+              {category.scripts.map(script => (
                 <CommandItem
                   key={`script:${script.slug}`}
                   value={`${script.slug}-${script.name}`}
@@ -148,7 +153,7 @@ export default function CommandMenu() {
                   <div className="flex gap-2" onClick={() => setOpen(false)}>
                     <Image
                       src={script.logo || `/${basePath}/logo.png`}
-                      onError={(e) => ((e.currentTarget as HTMLImageElement).src = `/${basePath}/logo.png`)}
+                      onError={e => ((e.currentTarget as HTMLImageElement).src = `/${basePath}/logo.png`)}
                       unoptimized
                       width={16}
                       height={16}

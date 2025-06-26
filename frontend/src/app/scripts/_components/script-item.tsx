@@ -1,31 +1,32 @@
 "use client";
 
-import { extractDate } from "@/lib/time";
-import { AppVersion, Script } from "@/lib/types";
-
 import { X } from "lucide-react";
+import { Suspense } from "react";
 import Image from "next/image";
 
-import { Separator } from "@/components/ui/separator";
-import { basePath } from "@/config/siteConfig";
-import { useVersions } from "@/hooks/useVersions";
-import { cleanSlug } from "@/lib/utils/resource-utils";
-import { Suspense } from "react";
-import { ResourceDisplay } from "./ResourceDisplay";
-import { getDisplayValueFromType } from "./ScriptInfoBlocks";
-import Alerts from "./ScriptItems/Alerts";
-import Buttons from "./ScriptItems/Buttons";
-import ConfigFile from "./ScriptItems/ConfigFile";
-import DefaultPassword from "./ScriptItems/DefaultPassword";
-import Description from "./ScriptItems/Description";
-import InstallCommand from "./ScriptItems/InstallCommand";
-import InterFaces from "./ScriptItems/InterFaces";
-import Tooltips from "./ScriptItems/Tooltips";
+import type { AppVersion, Script } from "@/lib/types";
 
-interface ScriptItemProps {
+import { cleanSlug } from "@/lib/utils/resource-utils";
+import { Separator } from "@/components/ui/separator";
+import { useVersions } from "@/hooks/use-versions";
+import { basePath } from "@/config/site-config";
+import { extractDate } from "@/lib/time";
+
+import { getDisplayValueFromType } from "./script-info-blocks";
+import DefaultPassword from "./ScriptItems/default-password";
+import InstallCommand from "./ScriptItems/install-command";
+import { ResourceDisplay } from "./resource-display";
+import Description from "./ScriptItems/description";
+import ConfigFile from "./ScriptItems/config-file";
+import InterFaces from "./ScriptItems/interfaces";
+import Tooltips from "./ScriptItems/tool-tips";
+import Buttons from "./ScriptItems/buttons";
+import Alerts from "./ScriptItems/alerts";
+
+type ScriptItemProps = {
   item: Script;
   setSelectedScript: (script: string | null) => void;
-}
+};
 
 function ScriptHeader({ item }: { item: Script }) {
   const defaultInstallMethod = item.install_methods?.[0];
@@ -40,7 +41,7 @@ function ScriptHeader({ item }: { item: Script }) {
             className="h-32 w-32 rounded-xl bg-gradient-to-br from-accent/40 to-accent/60 object-contain p-3 shadow-lg transition-transform hover:scale-105"
             src={item.logo || `/${basePath}/logo.png`}
             width={400}
-            onError={(e) => ((e.currentTarget as HTMLImageElement).src = `/${basePath}/logo.png`)}
+            onError={e => ((e.currentTarget as HTMLImageElement).src = `/${basePath}/logo.png`)}
             height={400}
             alt={item.name}
             unoptimized
@@ -58,10 +59,15 @@ function ScriptHeader({ item }: { item: Script }) {
                   </span>
                 </h1>
                 <div className="mt-1 flex items-center gap-3 text-sm text-muted-foreground">
-                  <span>Added {extractDate(item.date_created)}</span>
+                  <span>
+                    Added
+                    {extractDate(item.date_created)}
+                  </span>
                   <span>•</span>
                   <span className=" capitalize">
-                    {os} {version}
+                    {os}
+                    {" "}
+                    {version}
                   </span>
                 </div>
               </div>
@@ -76,10 +82,10 @@ function ScriptHeader({ item }: { item: Script }) {
                   hdd={defaultInstallMethod.resources.hdd}
                 />
               )}
-              {item.install_methods.find((method) => method.type === "alpine")?.resources && (
+              {item.install_methods.find(method => method.type === "alpine")?.resources && (
                 <ResourceDisplay
                   title="Alpine"
-                  {...item.install_methods.find((method) => method.type === "alpine")!.resources!}
+                  {...item.install_methods.find(method => method.type === "alpine")!.resources!}
                 />
               )}
             </div>
@@ -108,7 +114,8 @@ function VersionInfo({ item }: { item: Script }) {
     return cleanName === cleanSlug(item.slug) || cleanName.includes(cleanSlug(item.slug));
   });
 
-  if (!matchedVersion) return null;
+  if (!matchedVersion)
+    return null;
 
   return <span className="font-medium text-sm">{matchedVersion.version}</span>;
 }
@@ -144,7 +151,9 @@ export function ScriptItem({ item, setSelectedScript }: ScriptItemProps) {
             <div className="mt-4 rounded-lg border shadow-sm">
               <div className="flex gap-3 px-4 py-2 bg-accent/25">
                 <h2 className="text-lg font-semibold">
-                  How to {item.type === "pve" ? "use" : item.type === "addon" ? "apply" : "install"}
+                  How to
+                  {" "}
+                  {item.type === "pve" ? "use" : item.type === "addon" ? "apply" : "install"}
                 </h2>
                 <Tooltips item={item} />
               </div>

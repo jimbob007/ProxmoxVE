@@ -1,11 +1,16 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { OperatingSystems } from "@/config/siteConfig";
+import type { z } from "zod";
+
 import { PlusCircle, Trash2 } from "lucide-react";
 import { memo, useCallback, useRef } from "react";
-import { z } from "zod";
-import { InstallMethodSchema, ScriptSchema, type Script } from "../_schemas/schemas";
+
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { OperatingSystems } from "@/config/site-config";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+
+import type { Script } from "../_schemas/schemas";
+
+import { InstallMethodSchema, ScriptSchema } from "../_schemas/schemas";
 
 type InstallMethodProps = {
   script: Script;
@@ -28,9 +33,11 @@ function InstallMethod({ script, setScript, setIsValid, setZodErrors }: InstallM
 
       if (type === "pve") {
         scriptPath = `tools/pve/${slug}.sh`;
-      } else if (type === "addon") {
+      }
+      else if (type === "addon") {
         scriptPath = `tools/addon/${slug}.sh`;
-      } else {
+      }
+      else {
         scriptPath = `${type}/${slug}.sh`;
       }
 
@@ -65,8 +72,8 @@ function InstallMethod({ script, setScript, setIsValid, setZodErrors }: InstallM
             const updatedMethod = { ...method, [key]: value };
 
             if (key === "type") {
-              updatedMethod.script =
-                value === "alpine" ? `${prev.type}/alpine-${prev.slug}.sh` : `${prev.type}/${prev.slug}.sh`;
+              updatedMethod.script
+                = value === "alpine" ? `${prev.type}/alpine-${prev.slug}.sh` : `${prev.type}/${prev.slug}.sh`;
 
               // Set OS to Alpine and reset version if type is alpine
               if (value === "alpine") {
@@ -89,7 +96,8 @@ function InstallMethod({ script, setScript, setIsValid, setZodErrors }: InstallM
         setIsValid(result.success);
         if (!result.success) {
           setZodErrors(result.error);
-        } else {
+        }
+        else {
           setZodErrors(null);
         }
         return updated;
@@ -100,7 +108,7 @@ function InstallMethod({ script, setScript, setIsValid, setZodErrors }: InstallM
 
   const removeInstallMethod = useCallback(
     (index: number) => {
-      setScript((prev) => ({
+      setScript(prev => ({
         ...prev,
         install_methods: prev.install_methods.filter((_, i) => i !== index),
       }));
@@ -113,7 +121,7 @@ function InstallMethod({ script, setScript, setIsValid, setZodErrors }: InstallM
       <h3 className="text-xl font-semibold">Install Methods</h3>
       {script.install_methods.map((method, index) => (
         <div key={index} className="space-y-2 border p-4 rounded">
-          <Select value={method.type} onValueChange={(value) => updateInstallMethod(index, "type", value)}>
+          <Select value={method.type} onValueChange={value => updateInstallMethod(index, "type", value)}>
             <SelectTrigger>
               <SelectValue placeholder="Type" />
             </SelectTrigger>
@@ -130,12 +138,11 @@ function InstallMethod({ script, setScript, setIsValid, setZodErrors }: InstallM
               placeholder="CPU in Cores"
               type="number"
               value={method.resources.cpu || ""}
-              onChange={(e) =>
+              onChange={e =>
                 updateInstallMethod(index, "resources", {
                   ...method.resources,
                   cpu: e.target.value ? Number(e.target.value) : null,
-                })
-              }
+                })}
             />
             <Input
               ref={(el) => {
@@ -144,12 +151,11 @@ function InstallMethod({ script, setScript, setIsValid, setZodErrors }: InstallM
               placeholder="RAM in MB"
               type="number"
               value={method.resources.ram || ""}
-              onChange={(e) =>
+              onChange={e =>
                 updateInstallMethod(index, "resources", {
                   ...method.resources,
                   ram: e.target.value ? Number(e.target.value) : null,
-                })
-              }
+                })}
             />
             <Input
               ref={(el) => {
@@ -158,31 +164,29 @@ function InstallMethod({ script, setScript, setIsValid, setZodErrors }: InstallM
               placeholder="HDD in GB"
               type="number"
               value={method.resources.hdd || ""}
-              onChange={(e) =>
+              onChange={e =>
                 updateInstallMethod(index, "resources", {
                   ...method.resources,
                   hdd: e.target.value ? Number(e.target.value) : null,
-                })
-              }
+                })}
             />
           </div>
           <div className="flex gap-2">
             <Select
               value={method.resources.os || undefined}
-              onValueChange={(value) =>
+              onValueChange={value =>
                 updateInstallMethod(index, "resources", {
                   ...method.resources,
                   os: value || null,
                   version: null, // Reset version when OS changes
-                })
-              }
+                })}
               disabled={method.type === "alpine"}
             >
               <SelectTrigger>
                 <SelectValue placeholder="OS" />
               </SelectTrigger>
               <SelectContent>
-                {OperatingSystems.map((os) => (
+                {OperatingSystems.map(os => (
                   <SelectItem key={os.name} value={os.name}>
                     {os.name}
                   </SelectItem>
@@ -191,19 +195,18 @@ function InstallMethod({ script, setScript, setIsValid, setZodErrors }: InstallM
             </Select>
             <Select
               value={method.resources.version || undefined}
-              onValueChange={(value) =>
+              onValueChange={value =>
                 updateInstallMethod(index, "resources", {
                   ...method.resources,
                   version: value || null,
-                })
-              }
+                })}
               disabled={method.type === "alpine"}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Version" />
               </SelectTrigger>
               <SelectContent>
-                {OperatingSystems.find((os) => os.name === method.resources.os)?.versions.map((version) => (
+                {OperatingSystems.find(os => os.name === method.resources.os)?.versions.map(version => (
                   <SelectItem key={version.slug} value={version.name}>
                     {version.name}
                   </SelectItem>
@@ -212,12 +215,16 @@ function InstallMethod({ script, setScript, setIsValid, setZodErrors }: InstallM
             </Select>
           </div>
           <Button variant="destructive" size="sm" type="button" onClick={() => removeInstallMethod(index)}>
-            <Trash2 className="mr-2 h-4 w-4" /> Remove Install Method
+            <Trash2 className="mr-2 h-4 w-4" />
+            {" "}
+            Remove Install Method
           </Button>
         </div>
       ))}
       <Button type="button" size="sm" disabled={script.install_methods.length >= 2} onClick={addInstallMethod}>
-        <PlusCircle className="mr-2 h-4 w-4" /> Add Install Method
+        <PlusCircle className="mr-2 h-4 w-4" />
+        {" "}
+        Add Install Method
       </Button>
     </>
   );

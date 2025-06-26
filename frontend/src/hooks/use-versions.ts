@@ -1,8 +1,10 @@
 "use client";
 
-import { fetchVersions } from "@/lib/data";
-import { AppVersion } from "@/lib/types";
 import { useQuery } from "@tanstack/react-query";
+
+import type { AppVersion } from "@/lib/types";
+
+import { fetchVersions } from "@/lib/data";
 
 export function useVersions() {
   return useQuery<AppVersion[]>({

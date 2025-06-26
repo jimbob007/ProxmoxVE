@@ -1,8 +1,10 @@
-import { basePath } from "@/config/siteConfig";
+import { FileJson, Server } from "lucide-react";
 import Link from "next/link";
-import { FileJson, Server, ExternalLink } from "lucide-react";
-import { buttonVariants } from "./ui/button";
+
+import { basePath } from "@/config/site-config";
 import { cn } from "@/lib/utils";
+
+import { buttonVariants } from "./ui/button";
 
 export default function Footer() {
   return (
@@ -10,7 +12,8 @@ export default function Footer() {
       <div className="mx-6 w-full flex justify-between text-xs sm:text-sm text-muted-foreground">
         <div className="flex items-center">
           <p>
-            Website built by the community. The source code is available on{" "}
+            Website built by the community. The source code is available on
+            {" "}
             <Link
               href={`https://github.com/community-scripts/${basePath}/tree/main/frontend`}
               target="_blank"
@@ -28,13 +31,17 @@ export default function Footer() {
             href="/json-editor"
             className={cn(buttonVariants({ variant: "link" }), "text-muted-foreground flex items-center gap-2")}
           >
-            <FileJson className="h-4 w-4" /> JSON Editor
+            <FileJson className="h-4 w-4" />
+            {" "}
+            JSON Editor
           </Link>
           <Link
             href="/data"
             className={cn(buttonVariants({ variant: "link" }), "text-muted-foreground flex items-center gap-2")}
           >
-            <Server className="h-4 w-4" /> API Data
+            <Server className="h-4 w-4" />
+            {" "}
+            API Data
           </Link>
         </div>
       </div>

@@ -1,22 +1,27 @@
-import { Badge, type BadgeProps } from "@/components/ui/badge";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Script } from "@/lib/types";
-import { cn } from "@/lib/utils";
 import { CircleHelp } from "lucide-react";
 import React from "react";
 
-interface TooltipProps {
+import type { BadgeProps } from "@/components/ui/badge";
+import type { Script } from "@/lib/types";
+
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+
+type TooltipProps = {
   variant: BadgeProps["variant"];
   label: string;
   content?: string;
-}
+};
 
 const TooltipBadge: React.FC<TooltipProps> = ({ variant, label, content }) => (
   <TooltipProvider>
     <Tooltip delayDuration={100}>
       <TooltipTrigger className={cn("flex items-center", !content && "cursor-default")}>
         <Badge variant={variant} className="flex items-center gap-1">
-          {label} {content && <CircleHelp className="size-3" />}
+          {label}
+          {" "}
+          {content && <CircleHelp className="size-3" />}
         </Badge>
       </TooltipTrigger>
       {content && (

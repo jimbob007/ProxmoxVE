@@ -1,16 +1,18 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { basePath, mostPopularScripts } from "@/config/siteConfig";
-import { extractDate } from "@/lib/time";
-import { Category, Script } from "@/lib/types";
 import { CalendarPlus } from "lucide-react";
+import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+
+import type { Category, Script } from "@/lib/types";
+
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { basePath, mostPopularScripts } from "@/config/site-config";
+import { Button } from "@/components/ui/button";
+import { extractDate } from "@/lib/time";
 
 const ITEMS_PER_PAGE = 3;
 
-export const getDisplayValueFromType = (type: string) => {
+export function getDisplayValueFromType(type: string) {
   switch (type) {
     case "ct":
       return "LXC";
@@ -22,15 +24,16 @@ export const getDisplayValueFromType = (type: string) => {
     default:
       return "";
   }
-};
+}
 
 export function LatestScripts({ items }: { items: Category[] }) {
   const [page, setPage] = useState(1);
 
   const latestScripts = useMemo(() => {
-    if (!items) return [];
+    if (!items)
+      return [];
 
-    const scripts = items.flatMap((category) => category.scripts || []);
+    const scripts = items.flatMap(category => category.scripts || []);
 
     // Filter out duplicates by slug
     const uniqueScriptsMap = new Map<string, Script>();
@@ -46,11 +49,11 @@ export function LatestScripts({ items }: { items: Category[] }) {
   }, [items]);
 
   const goToNextPage = () => {
-    setPage((prevPage) => prevPage + 1);
+    setPage(prevPage => prevPage + 1);
   };
 
   const goToPreviousPage = () => {
-    setPage((prevPage) => prevPage - 1);
+    setPage(prevPage => prevPage - 1);
   };
 
   const startIndex = (page - 1) * ITEMS_PER_PAGE;
@@ -80,7 +83,7 @@ export function LatestScripts({ items }: { items: Category[] }) {
         </div>
       )}
       <div className="min-w flex w-full flex-row flex-wrap gap-4">
-        {latestScripts.slice(startIndex, endIndex).map((script) => (
+        {latestScripts.slice(startIndex, endIndex).map(script => (
           <Card key={script.slug} className="min-w-[250px] flex-1 flex-grow bg-accent/30">
             <CardHeader>
               <CardTitle className="flex items-center gap-3">
@@ -91,13 +94,15 @@ export function LatestScripts({ items }: { items: Category[] }) {
                     height={64}
                     width={64}
                     alt=""
-                    onError={(e) => ((e.currentTarget as HTMLImageElement).src = `/${basePath}/logo.png`)}
+                    onError={e => ((e.currentTarget as HTMLImageElement).src = `/${basePath}/logo.png`)}
                     className="h-11 w-11 object-contain"
                   />
                 </div>
                 <div className="flex flex-col">
                   <p className="text-lg line-clamp-1">
-                    {script.name} {getDisplayValueFromType(script.type)}
+                    {script.name}
+                    {" "}
+                    {getDisplayValueFromType(script.type)}
                   </p>
                   <p className="text-sm text-muted-foreground flex items-center gap-1">
                     <CalendarPlus className="h-4 w-4" />
@@ -130,7 +135,7 @@ export function LatestScripts({ items }: { items: Category[] }) {
 
 export function MostViewedScripts({ items }: { items: Category[] }) {
   const mostViewedScripts = items.reduce((acc: Script[], category) => {
-    const foundScripts = category.scripts.filter((script) => mostPopularScripts.includes(script.slug));
+    const foundScripts = category.scripts.filter(script => mostPopularScripts.includes(script.slug));
     return acc.concat(foundScripts);
   }, []);
 
@@ -142,7 +147,7 @@ export function MostViewedScripts({ items }: { items: Category[] }) {
         </>
       )}
       <div className="min-w flex w-full flex-row flex-wrap gap-4">
-        {mostViewedScripts.map((script) => (
+        {mostViewedScripts.map(script => (
           <Card key={script.slug} className="min-w-[250px] flex-1 flex-grow bg-accent/30">
             <CardHeader>
               <CardTitle className="flex items-center gap-3">
@@ -153,13 +158,15 @@ export function MostViewedScripts({ items }: { items: Category[] }) {
                     height={64}
                     width={64}
                     alt=""
-                    onError={(e) => ((e.currentTarget as HTMLImageElement).src = `/${basePath}/logo.png`)}
+                    onError={e => ((e.currentTarget as HTMLImageElement).src = `/${basePath}/logo.png`)}
                     className="h-11 w-11 object-contain"
                   />
                 </div>
                 <div className="flex flex-col">
                   <p className="line-clamp-1 text-lg">
-                    {script.name} {getDisplayValueFromType(script.type)}
+                    {script.name}
+                    {" "}
+                    {getDisplayValueFromType(script.type)}
                   </p>
                   <p className="flex items-center gap-1 text-sm text-muted-foreground">
                     <CalendarPlus className="h-4 w-4" />

@@ -1,4 +1,9 @@
-import { Label } from "@/components/ui/label";
+import type { z } from "zod";
+
+import { memo } from "react";
+
+import type { Category } from "@/lib/types";
+
 import {
   Select,
   SelectContent,
@@ -6,11 +11,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Category } from "@/lib/types";
+import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { z } from "zod";
-import { type Script } from "../_schemas/schemas";
-import { memo } from "react";
+
+import type { Script } from "../_schemas/schemas";
 
 type CategoryProps = {
   script: Script;
@@ -20,10 +24,10 @@ type CategoryProps = {
   categories: Category[];
 };
 
-const CategoryTag = memo(({ 
-  category, 
-  onRemove 
-}: { 
+const CategoryTag = memo(({
+  category,
+  onRemove,
+}: {
   category: Category;
   onRemove: () => void;
 }) => (
@@ -53,7 +57,7 @@ const CategoryTag = memo(({
   </span>
 ));
 
-CategoryTag.displayName = 'CategoryTag';
+CategoryTag.displayName = "CategoryTag";
 
 function Categories({
   script,
@@ -79,14 +83,16 @@ function Categories({
   return (
     <div>
       <Label>
-        Category <span className="text-red-500">*</span>
+        Category
+        {" "}
+        <span className="text-red-500">*</span>
       </Label>
-      <Select onValueChange={(value) => addCategory(Number(value))}>
+      <Select onValueChange={value => addCategory(Number(value))}>
         <SelectTrigger>
           <SelectValue placeholder="Select a category" />
         </SelectTrigger>
         <SelectContent>
-          {categories.map((category) => (
+          {categories.map(category => (
             <SelectItem key={category.id} value={category.id.toString()}>
               {category.name}
             </SelectItem>
@@ -101,13 +107,15 @@ function Categories({
       >
         {script.categories.map((categoryId) => {
           const category = categoryMap.get(categoryId);
-          return category ? (
-            <CategoryTag
-              key={categoryId}
-              category={category}
-              onRemove={() => removeCategory(categoryId)}
-            />
-          ) : null;
+          return category
+            ? (
+                <CategoryTag
+                  key={categoryId}
+                  category={category}
+                  onRemove={() => removeCategory(categoryId)}
+                />
+              )
+            : null;
         })}
       </div>
     </div>

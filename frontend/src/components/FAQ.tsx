@@ -1,7 +1,8 @@
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { Plus } from "lucide-react";
-import { FAQ_Items } from "../config/faqConfig";
+
 import { Accordion, AccordionContent, AccordionItem } from "./ui/accordion";
+import { FAQ_Items } from "../config/faq-config";
 
 export default function FAQ() {
   return (
