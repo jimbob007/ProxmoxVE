@@ -13,15 +13,15 @@ import { basePath } from "@/config/site-config";
 import { extractDate } from "@/lib/time";
 
 import { getDisplayValueFromType } from "./script-info-blocks";
-import DefaultPassword from "./ScriptItems/default-password";
-import InstallCommand from "./ScriptItems/install-command";
+import DefaultPassword from "./script-items/default-password";
+import InstallCommand from "./script-items/install-command";
 import { ResourceDisplay } from "./resource-display";
-import Description from "./ScriptItems/description";
-import ConfigFile from "./ScriptItems/config-file";
-import InterFaces from "./ScriptItems/interfaces";
-import Tooltips from "./ScriptItems/tool-tips";
-import Buttons from "./ScriptItems/buttons";
-import Alerts from "./ScriptItems/alerts";
+import Description from "./script-items/description";
+import ConfigFile from "./script-items/config-file";
+import InterFaces from "./script-items/interfaces";
+import Tooltips from "./script-items/tool-tips";
+import Buttons from "./script-items/buttons";
+import Alerts from "./script-items/alerts";
 
 type ScriptItemProps = {
   item: Script;
