@@ -30,13 +30,13 @@ curl -fsSLO https://github.com/pgaskin/kepubify/releases/latest/download/kepubif
 chmod +x kepubify-linux-64bit
 msg_ok "Installed Kepubify"
 
-msg_info "Installing Calibre-Web"
-mkdir -p /opt/calibre-web
+msg_info "Installing Calibre-Web-Automated"
+mkdir -p /opt/calibre-web-automated
 $STD apt-get install -y calibre
-$STD curl -fsSL https://github.com/janeczku/calibre-web/raw/master/library/metadata.db -o /opt/calibre-web/metadata.db
-$STD pip install calibreweb
+$STD curl -fsSL https://github.com/crocodilestick/Calibre-Web-Automated/raw/refs/heads/main/empty_library/metadata.db -o /opt/Calibre-Web-Automated/empty_library/metadata.db
+$STD pip install calibrewebautomated
 $STD pip install jsonschema
-msg_ok "Installed Calibre-Web"
+msg_ok "Installed Calibre-Web-Automated"
 
 msg_info "Creating Service"
 cat <<EOF >/etc/systemd/system/cps.service
@@ -46,7 +46,7 @@ After=network.target
 
 [Service]
 Type=simple
-WorkingDirectory=/opt/calibre-web
+WorkingDirectory=/opt/calibre-web-automated
 ExecStart=/usr/local/bin/cps
 TimeoutStopSec=20
 KillMode=process
